@@ -1,6 +1,6 @@
 import Faker from "faker";
 
-export default function getSomeData(properties, rows) {
+export default function getSomeData(properties = 6, rows = 10) {
   const tableheads = [
     "First",
     "Last",
@@ -9,10 +9,10 @@ export default function getSomeData(properties, rows) {
     "Company",
     "City",
     "Occupation",
-    "Uuid",
+    "Zip",
     "Country",
     "State",
-  ].slice(0, properties + 1);
+  ].slice(0, properties);
 
   const result = new Array(rows).fill(undefined).map((unneededIterator) => {
     let newObj = {};
@@ -39,8 +39,8 @@ export default function getSomeData(properties, rows) {
         case "Occupation":
             newObj[heading] = Faker.name.jobTitle();
           break;
-        case "Uuid":
-            newObj[heading] = Faker.uuid.uuid();
+        case "Zip":
+            newObj[heading] = Faker.address.zipCode();
           break;
         case "Country":
             newObj[heading] = Faker.address.country();
