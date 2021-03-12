@@ -1,7 +1,17 @@
-import React from 'react';
+import React from "react";
+import getSomeData from './data/dummy-data';
 
 export default function Table() {
-    return (<div>
-
-    </div>);
+//   const headers = getSomeData(5,5);
+//   console.log(headers)
+  return (
+    <div>
+      <table>
+        <tr>
+          <th>Month</th>
+          <th>Savings</th>
+        </tr>
+      </table>
+    </div>
+  );
 }
