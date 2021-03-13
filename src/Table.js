@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SearchForm from "./SearchForm";
+import InputModal from './InputModal';
 
 export default function Table({ data }) {
   // add a 'hidden' property to each object
@@ -9,6 +10,7 @@ export default function Table({ data }) {
 
   const [tableData, setTableData] = useState(adjustedData);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showInputModal, setShowInputModal] = useState(false);
   // don't render the 'hidden' property to the table
   const columnHeaders = Object.keys(tableData[0]).filter(text => text !== 'hidden');
 
@@ -53,6 +55,14 @@ export default function Table({ data }) {
     setTableData(() => newTableData);
   };
 
+  const handleShowInputModal = (e) => {
+      setShowInputModal(true);
+  }
+
+  const handleHideInputModal = (e) => {
+      setShowInputModal(false);
+  }
+
   const header = (() => {
     return (
       <tr>
@@ -80,6 +90,8 @@ export default function Table({ data }) {
   return (
     <div>
       <SearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <button onClick={handleShowInputModal}>Add New</button>
+      <InputModal show={showInputModal} hide={handleHideInputModal} />
       <table>
         <thead>{header}</thead>
         <tbody>{body}</tbody>
