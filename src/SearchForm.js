@@ -5,8 +5,13 @@ export default function SearchForm({ searchTerm, setSearchTerm }) {
     setSearchTerm(() => e.target.value);
   };
 
+  const divStyle = {
+    display: "inline-block",
+    marginRight: "10px"
+  }
+
   return (
-    <div>
+    <div style={divStyle}>
       <form>
         <label htmlFor="searchTable">Search: </label>
         <input
