@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SearchForm from "./SearchForm";
-import InputModal from './InputModal';
+import InputModal from "./InputModal";
 
 export default function Table({ data }) {
   // add a 'hidden' property to each object
@@ -12,7 +12,9 @@ export default function Table({ data }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [showInputModal, setShowInputModal] = useState(false);
   // don't render the 'hidden' property to the table
-  const columnHeaders = Object.keys(tableData[0]).filter(text => text !== 'hidden');
+  const columnHeaders = Object.keys(tableData[0]).filter(
+    (text) => text !== "hidden"
+  );
 
   // change 'hidden' property to true as needed to filter search terms
   useEffect(() => {
@@ -27,9 +29,9 @@ export default function Table({ data }) {
         !Object.values(row).some((tableDatum) => {
           // the 'hidden' term is a boolean, and has no .includes() function, so return false by default
           return typeof tableDatum == "string"
-            // if this cell at least partially matches the search term, return true
-            // and make it case-insensitive
-            ? tableDatum.toLowerCase().includes(searchTerm.toLowerCase())
+            ? // if this cell at least partially matches the search term, return true
+              // and make it case-insensitive
+              tableDatum.toLowerCase().includes(searchTerm.toLowerCase())
             : false;
         })
       ) {
@@ -56,42 +58,54 @@ export default function Table({ data }) {
   };
 
   const handleShowInputModal = (e) => {
-      setShowInputModal(true);
-  }
+    setShowInputModal(true);
+  };
 
   const handleHideInputModal = (e) => {
-      setShowInputModal(false);
-  }
+    setShowInputModal(false);
+  };
+
+  const handleNewRecordSubmit = (newRecordObject) => {
+    newRecordObject["hidden"] = false;
+    setTableData([...tableData, newRecordObject]);
+  };
 
   const header = (() => {
     return (
       <tr>
-        {columnHeaders.map((headTxt, idx) => 
-            <th onClick={handleHeaderClick} key={`h${idx}`}>
-              {headTxt}
-            </th>
-         )}
+        {columnHeaders.map((headTxt, idx) => (
+          <th onClick={handleHeaderClick} key={`h${idx}`}>
+            {headTxt}
+          </th>
+        ))}
       </tr>
     );
   })();
 
   const body = (() => {
-    return tableData.filter(row => !row.hidden).map((row, idx) => {
-      return (
-        <tr key={`r${idx}`}>
-          {columnHeaders.map((text, headIdx) => {
-            return <td key={`r${idx}-d${headIdx}`}>{row[text]}</td>;
-          })}
-        </tr>
-      );
-    });
+    return tableData
+      .filter((row) => !row.hidden)
+      .map((row, idx) => {
+        return (
+          <tr key={`r${idx}`}>
+            {columnHeaders.map((text, headIdx) => {
+              return <td key={`r${idx}-d${headIdx}`}>{row[text]}</td>;
+            })}
+          </tr>
+        );
+      });
   })();
 
   return (
     <div>
       <SearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <button onClick={handleShowInputModal}>Add New</button>
-      <InputModal show={showInputModal} hide={handleHideInputModal} />
+      <InputModal
+        show={showInputModal}
+        hide={handleHideInputModal}
+        headers={columnHeaders}
+        saveToParent={handleNewRecordSubmit}
+      />
       <table>
         <thead>{header}</thead>
         <tbody>{body}</tbody>
